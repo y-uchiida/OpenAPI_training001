@@ -49,6 +49,21 @@ servers:
         default: "v3"
 
 paths:
+  "/shops/{shopId}/reviews":
+    get: # GET メソッドでのリクエストに対するレスポンスを記述する
+      summary: "Get specified shop reviews" # レスポンスの内容について要約を記述する
+      description: "(description): Get specified shop reviews" # レスポンスの内容について詳細を記載する
+      tags: ["shops"]
+      deprecated: false # エンドポイントが廃止されているかどうか
+      parameters: # エンドポイントが持つパラメータの定義
+        - name: "shopId" # shopId パラメータについての定義
+          in: path # パラメータがどこに記載されるかを指定
+          required: true # 必須項目かどうか
+          schema: { type: string } # 受け取る値のスキーマ(型定義)
+      responses:
+        "200":
+          description: "Success operation"
+
   "/hello-world": #localhost/hello-world へのアクセス
     get:
       summary: "Sample API initial test"
