@@ -57,11 +57,42 @@ paths:
       deprecated: false # エンドポイントが廃止されているかどうか
       parameters: # エンドポイントが持つパラメータの定義
         - name: "shopId" # shopId パラメータについての定義
-          in: path # パラメータがどこに記載されるかを指定
-          required: true # 必須項目かどうか
+          description: "shop id"
+          in: path # パラメータがどこに記載されるかを指定 (query, header, path, cookie のいずれか)
+          required: true # 必須項目かどうか (デフォルトはfaulse) in: path の場合は必ずtrue を指定する必要がある
           schema: { type: string } # 受け取る値のスキーマ(型定義)
+
       responses:
         "200":
+          description: "Success operation"
+
+    post: # POST メソッドでのリクエストに対するレスポンスを記述する
+      summary: "Create review"
+      description: "Create review"
+      tags: ["shops"]
+      deprecated: false
+      parameters:
+        - name: "shopId"
+          description: "shop id"
+          in: path
+          required: true
+          schema: { type: string }
+          example: "abcdefg" # 指定される値のサンプル値
+
+        - name: "X-Api-Key"
+          in: header
+          description: "Request user's identifier"
+          schema: { type: string }
+          example: "XXXX-XXXX-XXXX-XXXX"
+
+        - name: "token"
+          in: cookie
+          description: "One time token"
+          schema: { type: string }
+          example: "token-aejtwb;ltkgtaherpuighb0yw5pkhj"
+
+      responses:
+        "201":
           description: "Success operation"
 
   "/hello-world": #localhost/hello-world へのアクセス
