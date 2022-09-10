@@ -1,0 +1,30 @@
+openapi: 3.0.3
+
+info:
+  title: "Sample API" # 必須項目
+  version: "1.0.0" # 必須項目、作成しているAPIドキュメントのバージョンを記述する
+
+  termsOfService: "https://example.com/terms/" # サービス利用規約のURL
+
+  contact: # 連絡先情報
+    name: "Customer Support"
+    url: "https://example.com/support"
+    email: "support@example.com"
+
+  license: # ライセンス情報の定義
+    name: "MIT License"
+    url: "https://opensource.org/lisences/MIT"
+
+paths:
+  "/hello-world": #localhost/hello-world へのアクセス
+    get:
+      summary: "Sample API initial test"
+      description: 'return string "Hello world from Sample API!!" '
+      responses:
+        200:
+          description: "Success operation"
+          content:
+            application/json:
+              schema:
+                type: "string"
+                example: "Hello world from Sample API!!"

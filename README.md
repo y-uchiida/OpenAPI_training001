@@ -6,9 +6,9 @@ OpenAPI の仕様に沿って、サンプルの WebAPI を設計・実装する�
 
 - Windows 11 (21H2)
 - WSL2 Ubuntu 20.04
-- OpenAPI 3.1.0
+- OpenAPI 3.0.3
 - Docker 20.10.17
-- Swagger UI 3.18.3
+- Swagger UI docker image latest
 
 ## 参考資料
 
