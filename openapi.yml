@@ -92,8 +92,30 @@ paths:
           example: "token-aejtwb;ltkgtaherpuighb0yw5pkhj"
 
       responses: # リクエストに対するレスポンスの詳細を記述する
-        "201":
+        "201": # レスポンスのステータス 201 の場合の詳細を定義する
           description: "Success operation"
+          headers: # レスポンスヘッダに含める内容を記述する
+            location: # ヘッダのlocation の項目に設定する内容
+              description: "New URL of created review"
+              schema: { type: string, format: url } # URLが入るので、フォーマットを指定しておく
+
+        "400": # レスポンスのステータス 400 の場合の詳細を定義する (クライアントサイドのエラー)
+          description: "Client error"
+          content:
+            application/json: # json 形式でのレスポンスであることを示す
+              schema:
+                type: object
+                properties: # レスポンスの項目内容を記述する
+                  code: { type: string, example: "1234-001" }
+                  type: { type: string, example: "not a integer" }
+                  message: { type: string, example: "score is not a integer" }
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field: { type: string, example: "score" }
+                        code: { type: string, example: "1234-001" }
 
       requestBody: # リクエストで受信するデータを定義する
         description: "Contents of review"
