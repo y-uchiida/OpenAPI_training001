@@ -15,6 +15,39 @@ info:
     name: "MIT License"
     url: "https://opensource.org/lisences/MIT"
 
+# 定義しているOpen APIを利用できるサーバーを列挙する
+# 環境ごとに記述していく
+# Viewerの「Servers」の項目に、プルダウンで並べられる
+servers:
+  - url: "http://api.example.com/{version}"
+    description: "Production Environment" # 上記 url の詳細情報(利用される環境など)
+    variables: # 環境上で利用される変数を記述
+      version: # URL のパスに含まれるAPIのバージョン番号を指定する
+        description: "API version"
+        enum: ["v1", "v2"] # version の値がとりうる値
+        default: "v2" # 必須
+
+  - url: "http://localhost:{port}"
+    description: "Local development"
+    variables:
+      port:
+        enum: ["3000", "8000"]
+        default: "3000"
+
+  - url: "https://it1.example.com"
+    description: "Integration test"
+
+  - url: "https://staging.example.com"
+    description: "Staging environment"
+
+  - url: "https://api-dev.example.com/{version}"
+    description: "Develop environment"
+    variables:
+      varsion:
+        description: "API version"
+        enum: ["v1", "v2", "v3"]
+        default: "v3"
+
 paths:
   "/hello-world": #localhost/hello-world へのアクセス
     get:
