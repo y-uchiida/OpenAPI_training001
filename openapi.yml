@@ -91,9 +91,20 @@ paths:
           schema: { type: string }
           example: "token-aejtwb;ltkgtaherpuighb0yw5pkhj"
 
-      responses:
+      responses: # リクエストに対するレスポンスの詳細を記述する
         "201":
           description: "Success operation"
+
+      requestBody: # リクエストで受信するデータを定義する
+        description: "Contents of review"
+        required: true # データの受信を必須とするかどうか
+        content: # リクエストデータの内容を記述する
+          application/json: # json 形式データ
+            schema: # 受け取るデータのスキーマ(型情報)
+              type: object
+              properties: # データに含まれる項目
+                score: { type: integer, example: 3 }
+                comment: { type: string, example: "おいしかった" }
 
   "/hello-world": #localhost/hello-world へのアクセス
     get:
