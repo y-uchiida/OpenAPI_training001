@@ -140,3 +140,33 @@ paths:
               schema:
                 type: "string"
                 example: "Hello world from Sample API!!"
+
+components: # ドキュメントの中で共通して利用するデータ型の定義
+  schemas:
+    SampleInt: # コンポーネント SampleInt を定義する
+      type: integer
+      minimum: 0 # 最小値
+      exclusiveMinimum: false # 最小値を許容するか
+      maximum: 100 # 最大値
+      exclusiveMaximum: true # 最大値を許容するか
+
+    SampleString:
+      type: string
+      nullable: true # null を許容するか
+      minLength: 10 # 最小の長さ
+      maxLength: 20 # 最大の長さ
+
+    SampleBoolean:
+      type: boolean # 真偽値型
+
+    SampleObject:
+      type: object # object 型のコンポーネントを定義
+      properties:
+        shop:
+          type: object
+          properties:
+            score: # integert 型の score という項目
+              type: integer
+              enum: [1, 2, 3, 4, 5]
+            comment: # string 型の comment という項目
+              type: string
