@@ -85,6 +85,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Review" # components オブジェクトで共通定義したオブジェクトのスキーマを利用する
 
+      security: [] # security オブジェクトに空配列を指定すると、このエンドポイントを利用するための認証・認可が不要になる
     post: # POST メソッドでのリクエストに対するレスポンスを記述する
       summary: "Create review"
       description: "Create review"
@@ -121,6 +122,9 @@ paths:
 
         "400": # レスポンスのステータス 400 の場合の詳細を定義する (クライアントサイドのエラー)
           $ref: "#/components/responses/400-BadRequest"
+
+      security: # 認証・認可の設定
+        - apikey_auth: [] # Components オブジェクト内で定義した、apikey_auth を読み込み
 
       requestBody: # リクエストで受信するデータを定義する
         description: "Contents of review"
@@ -224,3 +228,10 @@ components: # ドキュメントの中で共通して利用するデータ型の
             #       properties:
             #         field: {type: string, example: "score"}
             #         code: {type: string, example: "1234-001"}
+
+  securitySchemes: # 認証、認可のスキーマ設定を共通定義する
+    apikey_auth: #apikey_auth という名称の設定を作成
+      description: "API key authorization"
+      type: apiKey
+      in: header
+      name: "X-Api-Key"
