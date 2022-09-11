@@ -21,6 +21,12 @@ OpenAPI の仕様に沿って、サンプルの WebAPI を設計・実装する�
 $ docker compose up -d
 ```
 
+Docker を停止する場合は、以下のコマンドを実行してください
+
+```
+$ docker compose down
+```
+
 その後、`http://localhost` で swagger editor が表示されます。  
 左ペインの yml エディタに、クローンした`openapi.yml` の内容を貼り付けると、最終的な成果物を確認できます。
 
@@ -40,6 +46,6 @@ $ npm start
 
 ## 参考資料
 
-以下の教材をベースにソースコードを作成しました
+以下の教材をベースにソースコードを作成しました  
 REST WebAPI サービス 設計 :  
 https://www.udemy.com/course/rest-webapi-development/
