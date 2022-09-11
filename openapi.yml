@@ -3,14 +3,14 @@ openapi: 3.0.3
 info:
   title: "Sample API" # 必須項目
   version: "1.0.0" # 必須項目、作成しているAPIドキュメントのバージョンを記述する
-  
+
   termsOfService: "https://example.com/terms/" # サービス利用規約のURL
 
   contact: # 連絡先情報
     name: "Customer Support"
     url: "https://example.com/support"
     email: "support@example.com"
-    
+
   license: # ライセンス情報の定義
     name: "MIT License"
     url: "https://opensource.org/lisences/MIT"
@@ -36,7 +36,7 @@ servers:
 
   - url: "https://it1.example.com"
     description: "Integration test"
-    
+
   - url: "https://staging.example.com"
     description: "Staging environment"
 
@@ -55,51 +55,60 @@ tags: # エンドポイントに設定するタグの定義
 paths:
   "/shops/{shopId}/reviews":
     parameters: # エンドポイント直下の`properties` に設定すると、各メソッドで共通なパラメータを定義できる
-      - name: shopId
-        in: path# パラメータがどこに記載されるかを指定 (query, header, path, cookie のいずれか)
-        required: true　# 必須項目かどうか (デフォルトはfaulse) in: path の場合は必ずtrue を指定する必要がある
-        schema: {type: string} # 受け取る値のスキーマ(型定義)
+      - $ref: "#/components/parameters/ShopId" # shopIdの定義内容を、コンポーネントから参照する
+
+      # - name: shopId
+      #   description: "Shop identifier"
+      #   in: path # パラメータがどこに記載されるかを指定 (query, header, path, cookie のいずれか)
+      #   required: true
+      #   schema: { type: string } # 受け取る値のスキーマ(型定義)
     get: # GET メソッドでのリクエストに対するレスポンスを記述する
       summary: "Get specified shop reviews" # レスポンスの内容について要約を記述する
       description: "(description): Get specified shop reviews" # レスポンスの内容について詳細を記載する
       tags: ["shops", "reviews"] # エンドポイントに設定するタグを配列で列挙する
       deprecated: false # エンドポイントが廃止されているかどうか
-      parameters: # エンドポイントが持つパラメータの定義
-        # `name` は共通定義したので、 get メソッドの設定で個別定義する必要がなくなった 
-        # - name: "shopId" # shopId パラメータについての定義
-        #   description: "shop id"
-        #   in: path # パラメータがどこに記載されるかを指定 (query, header, path, cookie のいずれか)
-        #   required: true # 必須項目かどうか (デフォルトはfaulse) in: path の場合は必ずtrue を指定する必要がある
-        #   schema: {type: string} # 受け取る値のスキーマ(型定義)
-          
+      # parameters: # エンドポイントが持つパラメータの定義
+      # `shopId` は共通定義したので、 get メソッドの設定で個別定義する必要がなくなった
+      # - name: "shopId" # shopId パラメータについての定義
+      #   description: "shop id"
+      #   in: path # パラメータがどこに記載されるかを指定 (query, header, path, cookie のいずれか)
+      #   required: true # 必須項目かどうか (デフォルトはfaulse) in: path の場合は必ずtrue を指定する必要がある
+      #   schema: {type: string} # 受け取る値のスキーマ(型定義)
+
       responses:
         "200":
           description: "Success operation"
-          
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Review" # components オブジェクトで共通定義したオブジェクトのスキーマを利用する
+
     post: # POST メソッドでのリクエストに対するレスポンスを記述する
       summary: "Create review"
       description: "Create review"
       tags: ["shops", "reviews"] # エンドポイントに設定するタグを配列で列挙する
       deprecated: false
       parameters:
-        # `name` は共通定義したので、 get メソッドの設定で個別定義する必要がなくなった 
+        # `shopId` は共通定義したので、 post メソッドの設定で個別定義する必要がなくなった
         # - name: "shopId" # shopId パラメータについての定義
         #   description: "shop id"
         #   in: path # パラメータがどこに記載されるかを指定 (query, header, path, cookie のいずれか)
         #   required: true # 必須項目かどうか (デフォルトはfaulse) in: path の場合は必ずtrue を指定する必要がある
         #   schema: {type: string} # 受け取る値のスキーマ(型定義)
         # example: "abcdefg" # 指定される値のサンプル値
-          
+
         - name: "X-Api-Key"
           in: header
           description: "Request user's identifier"
-          schema: {type: string}
+          schema: { type: string }
           example: "XXXX-XXXX-XXXX-XXXX"
-        
+
         - name: "token"
           in: cookie
           description: "One time token"
-          schema: {type: string}
+          schema: { type: string }
           example: "token-aejtwb;ltkgtaherpuighb0yw5pkhj"
 
       responses: # リクエストに対するレスポンスの詳細を記述する
@@ -108,41 +117,27 @@ paths:
           headers: # レスポンスヘッダに含める内容を記述する
             location: # ヘッダのlocation の項目に設定する内容
               description: "New URL of created review"
-              schema: {type: string, format: url} # URLが入るので、フォーマットを指定しておく
+              schema: { type: string, format: url } # URLが入るので、フォーマットを指定しておく
 
         "400": # レスポンスのステータス 400 の場合の詳細を定義する (クライアントサイドのエラー)
-          description: "Client error"
-          content:
-            application/json: # json 形式でのレスポンスであることを示す
-              schema:
-                type: object
-                properties: # レスポンスの項目内容を記述する
-                  code: {type: string, example: "1234-001"}
-                  type: {type: string, example: "not a integer"}
-                  message: {type: string, example: "score is not a integer"}
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        field: {type: string, example: "score"}
-                        code: {type: string, example: "1234-001"}
-          
+          $ref: "#/components/responses/400-BadRequest"
+
       requestBody: # リクエストで受信するデータを定義する
         description: "Contents of review"
         required: true # データの受信を必須とするかどうか
         content: # リクエストデータの内容を記述する
           application/json: # json 形式データ
             schema: # 受け取るデータのスキーマ(型情報)
-              type: object
-              properties: # データに含まれる項目
-                score: {type: integer, example: 3}
-                comment: {type: string, example: "おいしかった"}
-   
+              $ref: "#/components/schemas/Review"
+              # type: object
+              # properties: # データに含まれる項目
+              #   score: {type: integer, example: 3}
+              #   comment: {type: string, example: "おいしかった"}
+
   "/hello-world": #localhost/hello-world へのアクセス
     get:
       summary: "Sample API initial test"
-      description: "return string \"Hello world from Sample API!!\" "
+      description: 'return string "Hello world from Sample API!!" '
       responses:
         200:
           description: "Success operation"
@@ -151,25 +146,45 @@ paths:
               schema:
                 type: "string"
                 example: "Hello world from Sample API!!"
-                
+
 components: # ドキュメントの中で共通して利用するデータ型の定義
   schemas:
+    Review: # コンポーネント Review を定義する
+      type: object
+      properties: # データに含まれる項目
+        score: { type: integer, example: 3 }
+        comment: { type: string, example: "おいしかった" }
+
+    ClientError:
+      type: object
+      properties: # レスポンスの項目内容を記述する
+        code: { type: string, example: "1234-001" }
+        type: { type: string, example: "not a integer" }
+        message: { type: string, example: "score is not a integer" }
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              field: { type: string, example: "score" }
+              code: { type: string, example: "1234-001" }
+
     SampleInt: # コンポーネント SampleInt を定義する
       type: integer
       minimum: 0 # 最小値
-      exclusiveMinimum: false # 最小値を許容するか 
+      exclusiveMinimum: false # 最小値を許容するか
       maximum: 100 # 最大値
       exclusiveMaximum: true # 最大値を許容するか
-    
+
     SampleString:
       type: string
       nullable: true # null を許容するか
       minLength: 10 # 最小の長さ
       maxLength: 20 # 最大の長さ
-    
+
     SampleBoolean:
       type: boolean # 真偽値型
-      
+
     SampleObject:
       type: object # object 型のコンポーネントを定義
       properties:
@@ -178,6 +193,34 @@ components: # ドキュメントの中で共通して利用するデータ型の
           properties:
             score: # integert 型の score という項目
               type: integer
-              enum: [1, 2, 3 ,4 ,5]
+              enum: [1, 2, 3, 4, 5]
             comment: # string 型の comment という項目
               type: string
+
+  parameters: # APIに対するパラメータの設定を共通化する
+    ShopId:
+      name: shopId
+      description: "Shop identifier"
+      in: path # パラメータがどこに記載されるかを指定 (query, header, path, cookie のいずれか)
+      required: true
+      schema: { type: string } # 受け取る値のスキーマ(型定義)
+
+  responses: # APIからのレスポンスの設定を共通化する
+    400-BadRequest:
+      description: "Client error"
+      content:
+        application/json: # json 形式でのレスポンスであることを示す
+          schema:
+            $ref: "#/components/schemas/ClientError"
+            # type: object
+            # properties: # レスポンスの項目内容を記述する
+            #   code: {type: string, example: "1234-001"}
+            #   type: {type: string, example: "not a integer"}
+            #   message: {type: string, example: "score is not a integer"}
+            #   errors:
+            #     type: array
+            #     items:
+            #       type: object
+            #       properties:
+            #         field: {type: string, example: "score"}
+            #         code: {type: string, example: "1234-001"}
