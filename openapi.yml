@@ -31,7 +31,7 @@ servers:
     description: "Local development"
     variables:
       port:
-        enum: ["3000", "8000"]
+        enum: ["3000", "8000", "8080"]
         default: "3000"
 
   - url: "https://it1.example.com"
@@ -43,7 +43,7 @@ servers:
   - url: "https://api-dev.example.com/{version}"
     description: "Develop environment"
     variables:
-      varsion:
+      version:
         description: "API version"
         enum: ["v1", "v2", "v3"]
         default: "v3"
@@ -72,7 +72,7 @@ paths:
       # - name: "shopId" # shopId パラメータについての定義
       #   description: "shop id"
       #   in: path # パラメータがどこに記載されるかを指定 (query, header, path, cookie のいずれか)
-      #   required: true # 必須項目かどうか (デフォルトはfaulse) in: path の場合は必ずtrue を指定する必要がある
+      #   required: true # 必須項目かどうか (デフォルトはfalse) in: path の場合は必ずtrue を指定する必要がある
       #   schema: {type: string} # 受け取る値のスキーマ(型定義)
 
       responses:
@@ -96,7 +96,7 @@ paths:
         # - name: "shopId" # shopId パラメータについての定義
         #   description: "shop id"
         #   in: path # パラメータがどこに記載されるかを指定 (query, header, path, cookie のいずれか)
-        #   required: true # 必須項目かどうか (デフォルトはfaulse) in: path の場合は必ずtrue を指定する必要がある
+        #   required: true # 必須項目かどうか (デフォルトはfalse) in: path の場合は必ずtrue を指定する必要がある
         #   schema: {type: string} # 受け取る値のスキーマ(型定義)
         # example: "abcdefg" # 指定される値のサンプル値
 
@@ -195,7 +195,7 @@ components: # ドキュメントの中で共通して利用するデータ型の
         shop:
           type: object
           properties:
-            score: # integert 型の score という項目
+            score: # integer 型の score という項目
               type: integer
               enum: [1, 2, 3, 4, 5]
             comment: # string 型の comment という項目
